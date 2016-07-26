@@ -18,7 +18,6 @@ class BusinessCell: UITableViewCell {
     @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     
-    
     var business : Business! {
         didSet{
             nameLabel.text = business.name

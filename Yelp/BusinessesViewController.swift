@@ -8,18 +8,29 @@
 
 import UIKit
 
+
+
 class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, FilterViewControllerDelegate {
     
-    let data = ["New York, NY", "Los Angeles, CA", "Chicago, IL", "Houston, TX",
-                "Philadelphia, PA", "Phoenix, AZ", "San Diego, CA", "San Antonio, TX",
-                "Dallas, TX", "Detroit, MI", "San Jose, CA", "Indianapolis, IN",
-                "Jacksonville, FL", "San Francisco, CA", "Columbus, OH", "Austin, TX",
-                "Memphis, TN", "Baltimore, MD", "Charlotte, ND", "Fort Worth, TX"]
-    
-    
     var filteredData: [String]!
-    //    var searchController: UISearchController!
     var searchBar :UISearchBar!
+    
+    var searchTerm : String? = ""
+    
+    var sortMode : YelpSortMode? = nil
+    var distanceMode : YelpDistanceMode? = nil
+    var categories : [String]? = []
+    var deals : Bool? = false
+    var businessDetailedView : Business?
+    
+//    var preferences: Preferences = Preferences() {
+//        didSet {
+//            Business.searchWithTerm(searchTerm!, distance: distanceMode, sort: sortMode, categories: categories, deals: deals) { (businesses: [Business]!, error: NSError!) -> Void in
+//                self.businesses = businesses
+//                self.tableView.reloadData()
+//            }
+//        }
+//    }
     
     @IBOutlet weak var tableView: UITableView!
     var businesses: [Business]!
@@ -39,30 +50,29 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         self.navigationController?.navigationBar.barTintColor = UIColor.redColor()
         self.navigationController?.navigationBar.translucent = false
         
-        //        searchController = UISearchController(searchResultsController: nil)
-        //        searchController.searchResultsUpdater = self
-        //        searchController.dimsBackgroundDuringPresentation = false
-        //        searchController.searchBar.sizeToFit()
-        //        tableView.tableHeaderView = searchController.searchBar
-        
         //        tableView.tableHeaderView = searchBar
         navigationItem.titleView = searchBar
         definesPresentationContext = true
         //        searchBar.showsCancelButton = true
         
         
-        Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
-            
+//        Business.searchWithTerm(searchTerm!, completion: { (businesses: [Business]!, error: NSError!) -> Void in
+//            
+//            self.businesses = businesses
+//            self.tableView.reloadData()
+//            
+//            for business in businesses {
+//                print()
+//                print(business.name!)
+//                print(business.address!)
+//                print(business.distance!)
+//            }
+//        })
+
+        Business.searchWithTerm(searchTerm!, distance: distanceMode, sort: sortMode, categories: categories, deals: deals) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
-            
-            for business in businesses {
-                print()
-                print(business.name!)
-                print(business.address!)
-                print(business.distance!)
-            }
-        })
+        }
         
         /* Example of Yelp search with more search options specified
          Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
@@ -78,31 +88,17 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         print("cancel button clicked ")
-        
     }
     func searchBarSearchButtonClicked(searchBar: UISearchBar){
-        
-        let searchText = searchBar.text
-        if searchText != nil{
-            Business.searchWithTerm(searchText!, sort: .Distance, categories: [], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
+        print("entered search bar search button clicked")
+        searchTerm = searchBar.text!
+        if searchTerm != nil{
+            Business.searchWithTerm(searchTerm!, distance: distanceMode, sort: sortMode, categories: categories, deals: deals) { (businesses: [Business]!, error: NSError!) -> Void in
                 self.businesses = businesses
                 self.tableView.reloadData()
             }
         }
         
-    }
-    
-    
-    //del this func if searchbar works
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
-        if let searchText = searchController.searchBar.text {
-            
-            Business.searchWithTerm(searchText, completion: { (businesses: [Business]!, error: NSError!) -> Void in
-                self.businesses = businesses
-            })
-            print("update search results func !")
-            tableView.reloadData()
-        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -120,30 +116,77 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("BusinessCell", forIndexPath: indexPath) as! BusinessCell
-        
         cell.business = businesses[indexPath.row]
-        
         return cell
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("BusinessCell", forIndexPath: indexPath) as! BusinessCell
+        cell.business = businesses[indexPath.row]
+        
+        businessDetailedView = cell.business
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+    }
     
-    // MARK: - Navigation
     
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        let navigationController = segue.destinationViewController as! UINavigationController
-        
-        let filtersViewController = navigationController.topViewController as! FiltersViewController
-        
-        filtersViewController.delegate = self
+        if segue.identifier == "filtersSegue" {
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let filtersViewController = navigationController.topViewController as! FiltersViewController
+            filtersViewController.delegate = self
+        }
+        else if segue.identifier == "detailsSegue"{
+            print("preparing for details page view controller !")
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let detailsViewController = navigationController.topViewController as! DetailsViewController
+            let cell = sender as! BusinessCell!
+            let indexPath = tableView.indexPathForCell(cell)
+            businessDetailedView = businesses![indexPath!.row]
+
+            detailsViewController.business = businessDetailedView
+        }
+//        filtersViewController.currentPrefs = self.preferences
+//        self.preferences = filtersViewController.preferencesFromTableData()
     }
     
     func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
         
-        let categories = filters["categories"] as? [String]
+        let sort = filters["sort"] as? Int
+        let distance = filters["distance"] as? Int
         
-        Business.searchWithTerm("Restaurants", sort: nil, categories: categories, deals: nil){
+        categories = filters["categories"] as? [String]
+        deals = filters["deals"] as? Bool
+        print("in did update, businessviewcontrlr deals :",deals!)
+        
+        switch sort! {
+        case 0 :
+            sortMode = YelpSortMode.BestMatched
+        case 1 :
+            sortMode = YelpSortMode.Distance
+        case 2 :
+            sortMode = YelpSortMode.HighestRated
+        default :
+            sortMode = YelpSortMode.BestMatched
+        }
+        
+        switch distance! {
+        case 0:
+            distanceMode = YelpDistanceMode.PointThree
+        case 1 :
+            distanceMode = YelpDistanceMode.One
+        case 2 :
+            distanceMode = YelpDistanceMode.Five
+        case 3 :
+            distanceMode = YelpDistanceMode.Twenty
+        default :
+            distanceMode = YelpDistanceMode.PointThree
+        }
+        
+        
+        Business.searchWithTerm(searchTerm!, distance: distanceMode, sort: sortMode, categories: categories, deals: deals!){
             (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()

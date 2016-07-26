@@ -12,69 +12,139 @@ import UIKit
     optional func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String:AnyObject])
 }
 
+class Preferences{
+    var sortMode = 0, distanceMode = 0
+}
+
 class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SwitchCellDelegate {
     
-//    var data : [String : [[String: AnyObject]]]!
+//    var currentPrefs = Preferences!()
     
+    @IBOutlet weak var sortBySegmentCtrl: UISegmentedControl!
+    @IBOutlet weak var distanceSegmentCtrl: UISegmentedControl!
+    var sortFilterIndex : Int? = 0
+    var distanceFilterIndex : Int? = 0
     weak var delegate : FilterViewControllerDelegate?
     @IBOutlet weak var tableView: UITableView!
+
+    var isDistanceExpanded = false
+    var isSortByExpanded = false
+    var isOfferingDeal : Bool?
+    
     var categories : [[String:String]]!
-    var sort : [[String:AnyObject]]!
+    var distanceFilters : [[String:String]]!
+    var sortByFilters : [[String:String]]!
+    
+    var sortByFilter : Int! = 0
+    var distanceFilter : Int! = 0
+    var dealsFilter : Bool! = false
+//    var sort : [[String:AnyObject]]!
     var switchStates = [Int:Bool]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        currentPrefs = currentPrefs ?? Preferences()
+//        initSwitches()
+        
         tableView.delegate = self
         tableView.dataSource = self
         
         categories = yelpCategories()
-//        data["categories"] = categories
-     
-//        sort = sortingCategories()
-//        data["sort"] = sort
-//        
+//        distanceFilters = yelpDistanceFilters()
+//        sortByFilters = yelpSortByFilters()
         
+        sortBySegmentCtrl.selectedSegmentIndex = sortFilterIndex!
+        distanceSegmentCtrl.selectedSegmentIndex = distanceFilter!
+        print("in viewDidLoad")
         tableView.reloadData()
     }
     
+    /*
+    func initSwitches(){
+        sortBySegmentCtrl.selectedSegmentIndex = currentPrefs.sortMode
+        distanceSegmentCtrl.selectedSegmentIndex = currentPrefs.distanceMode
+    }
+
+    
+    func preferencesFromTableData() -> Preferences {
+        let newPrefs = Preferences()
+        newPrefs.sortMode = sortBySegmentCtrl.selectedSegmentIndex
+        newPrefs.distanceMode = distanceSegmentCtrl.selectedSegmentIndex
+        return newPrefs
+    }
+ */
+    
+    //    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    //        return 2
+    //    }
+    
+    @IBAction func dealsButtonTapped(sender: AnyObject) {
+        dealsFilter = (sender as! UISwitch).on
+    }
+    @IBAction func sortBySegmentedControlTapped(sender: AnyObject) {
+        sortByFilter = (sender as! UISegmentedControl).selectedSegmentIndex
+    }
+    
+    @IBAction func distanceSegmentedControlTapped(sender: AnyObject) {
+        distanceFilter = (sender as! UISegmentedControl).selectedSegmentIndex
+    }
+    
 //    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        return 2
+//        return 4
+//    }
+    
+//    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        switch section {
+//        case 0: return 1
+//        case 1: return isDistanceExpanded ? distanceFilters.count ?? 0 : 1
+//        case 2: return isSortByExpanded ? sortByFilters.count ?? 0 : 1
+//        case 3: return categories?.count ?? 0
+//        default: return 0
+//        }
+//    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if categories != nil{
+            return categories.count
+        }else{
+            return 0
+        }
+    }
+    
+//    func tableView(tableView: UITableView,
+//                   titleForHeaderInSection section: Int) -> String? {
+//        if section == 1 { return "Distance" }
+//        else if section == 2 { return "Sort By" }
+//        else if section == 3 { return "Category" }
+//        else { return "" }
 //    }
     
     
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if section == 0{
-            if categories != nil{
-                return categories.count
-            }else{
-                return 0
-            }
-
-        }else {
-            if sort != nil{
-                return sort.count
-            }else{
-                return 0
-            }
-        }
-        
-    }
+//    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+//        switch indexPath.section {
+//        case 0 :
+//            let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell
+//            cell.delegate = self
+//            cell.switchLabel.text = "Offering Deal"
+//            cell.onSwitch.on = isOfferingDeal ?? false
+//            return cell
+//        case 1:
+//            let cell = tableView.dequeueReusableCellWithIdentifier("SingleSelectCell", forIndexPath: indexPath) as! SingleSelectCell
+//            
+//            
+//        case 2:
+//            
+//            
+//        default:
+//        }
+//    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell
         cell.delegate = self
         
         cell.switchLabel.text = categories[indexPath.row]["name"]
-        
-        //        if switchStates[indexPath.row] != nil{
-        //            cell.onSwitch.on = switchStates[indexPath.row]!
-        //        }else{
-        //            cell.onSwitch.on = false
-        //        }
-        
         cell.onSwitch.on = switchStates[indexPath.row] ?? false
         
         return cell
@@ -101,6 +171,21 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
             filters["categories"] = selectedCategories
         }
         
+        if sortByFilter != nil{
+            filters["sort"] = sortByFilter
+        }
+        
+        if distanceFilter != nil{
+            filters["distance"] = distanceFilter
+        }
+        
+        if dealsFilter != nil {
+            print("dealsfilter : ",dealsFilter)
+            filters["deals"] = dealsFilter
+        }
+        
+        print("filters ",filters)
+        
         delegate?.filtersViewController?(self, didUpdateFilters: filters)
     }
     @IBAction func onCancelButton(sender: AnyObject) {
@@ -112,13 +197,14 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         // Dispose of any resources that can be recreated.
     }
     
-    func sortingCategories() -> [[String:AnyObject]]{
-        return [
-            ["Best Match" : 0],
-            ["Distance" : 1],
-            ["Highest Rated" : 2]
-        ]
-    }
+    
+    
+//    func yelpDistanceFilters() -> [[String:String]] {
+//        
+//    }
+//    func yelpSortByFilters() -> [[String:String]] {
+//        
+//    }
     
     func yelpCategories() -> [[String:String]] {
         return [

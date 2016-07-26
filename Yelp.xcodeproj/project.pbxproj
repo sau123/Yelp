@@ -16,6 +16,8 @@
 		22AAAA991AEA0A9700A544AF /* Business.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAAA981AEA0A9700A544AF /* Business.swift */; };
 		22AAAA9C1AEA1EC300A544AF /* BusinessesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAAA9B1AEA1EC300A544AF /* BusinessesViewController.swift */; };
 		31D95BCBCA38716181E686D3 /* Pods_Yelp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C79C0AC126EDAA235847CEA2 /* Pods_Yelp.framework */; };
+		342272141D46E0640084C872 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342272131D46E0640084C872 /* DetailsViewController.swift */; };
+		342272161D4729BF0084C872 /* SingleSelectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342272151D4729BF0084C872 /* SingleSelectCell.swift */; };
 		34E137BE1D456CAF005887A8 /* BusinessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E137BD1D456CAF005887A8 /* BusinessCell.swift */; };
 		34E137C01D45B056005887A8 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E137BF1D45B056005887A8 /* SwitchCell.swift */; };
 		34E137C21D45B1F3005887A8 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E137C11D45B1F3005887A8 /* FiltersViewController.swift */; };
@@ -46,6 +48,8 @@
 		222D8A7C19CCFAE000D2DB53 /* YelpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YelpClient.swift; sourceTree = "<group>"; };
 		22AAAA981AEA0A9700A544AF /* Business.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Business.swift; sourceTree = "<group>"; };
 		22AAAA9B1AEA1EC300A544AF /* BusinessesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusinessesViewController.swift; sourceTree = "<group>"; };
+		342272131D46E0640084C872 /* DetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		342272151D4729BF0084C872 /* SingleSelectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleSelectCell.swift; sourceTree = "<group>"; };
 		34E137BD1D456CAF005887A8 /* BusinessCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusinessCell.swift; sourceTree = "<group>"; };
 		34E137BF1D45B056005887A8 /* SwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
 		34E137C11D45B1F3005887A8 /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
@@ -159,6 +163,7 @@
 			children = (
 				22AAAA9B1AEA1EC300A544AF /* BusinessesViewController.swift */,
 				34E137C11D45B1F3005887A8 /* FiltersViewController.swift */,
+				342272131D46E0640084C872 /* DetailsViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -168,6 +173,7 @@
 			children = (
 				34E137BD1D456CAF005887A8 /* BusinessCell.swift */,
 				34E137BF1D45B056005887A8 /* SwitchCell.swift */,
+				342272151D4729BF0084C872 /* SingleSelectCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -397,6 +403,8 @@
 				34E137BE1D456CAF005887A8 /* BusinessCell.swift in Sources */,
 				22AAAA9C1AEA1EC300A544AF /* BusinessesViewController.swift in Sources */,
 				34E137C21D45B1F3005887A8 /* FiltersViewController.swift in Sources */,
+				342272161D4729BF0084C872 /* SingleSelectCell.swift in Sources */,
+				342272141D46E0640084C872 /* DetailsViewController.swift in Sources */,
 				22AAAA991AEA0A9700A544AF /* Business.swift in Sources */,
 				222D8A7D19CCFAE000D2DB53 /* YelpClient.swift in Sources */,
 				222D8A5B19CCF9F900D2DB53 /* AppDelegate.swift in Sources */,

@@ -21,6 +21,13 @@ enum YelpSortMode: Int {
     case BestMatched = 0, Distance, HighestRated
 }
 
+enum YelpDistanceMode: Float {
+    case PointThree = 482.8032,
+         One = 1609.344,
+         Five = 8046.72,
+         Twenty = 32186.88
+}
+
 class YelpClient: BDBOAuth1RequestOperationManager {
     var accessToken: String!
     var accessSecret: String!
@@ -52,10 +59,10 @@ class YelpClient: BDBOAuth1RequestOperationManager {
     }
     
     func searchWithTerm(term: String, completion: ([Business]!, NSError!) -> Void) -> AFHTTPRequestOperation {
-        return searchWithTerm(term, sort: nil, categories: nil, deals: nil, completion: completion)
+        return searchWithTerm(term, distance: nil, sort: nil, categories: nil, deals: nil, completion: completion)
     }
     
-    func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, completion: ([Business]!, NSError!) -> Void) -> AFHTTPRequestOperation {
+    func searchWithTerm(term: String, distance: YelpDistanceMode?, sort: YelpSortMode?, categories: [String]?, deals: Bool?, completion: ([Business]!, NSError!) -> Void) -> AFHTTPRequestOperation {
         // For additional parameters, see http://www.yelp.com/developers/documentation/v2/search_api
 
         // Default the location to San Francisco
@@ -70,12 +77,18 @@ class YelpClient: BDBOAuth1RequestOperationManager {
         }
         
         if deals != nil {
-            parameters["deals_filter"] = deals!
+            parameters["deals_filter"] = Bool(deals!)
+            print("deals filter in search term!! : ",deals!)
+        }
+        
+        if distance != nil {
+            parameters["radius_filter"] = distance!.rawValue
         }
         
         print("parameters",parameters)
         
         return self.GET("search", parameters: parameters, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            print("operation :",operation)
             let dictionaries = response["businesses"] as? [NSDictionary]
             
             if dictionaries != nil {

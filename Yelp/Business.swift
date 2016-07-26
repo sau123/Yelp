@@ -14,11 +14,16 @@ class Business: NSObject {
     let imageURL: NSURL?
     let categories: String?
     let distance: String?
+    let descriptn: String?
     let ratingImageURL: NSURL?
     let reviewCount: NSNumber?
+    var isClosed: Bool!
+    
     
     init(dictionary: NSDictionary) {
         name = dictionary["name"] as? String
+        isClosed = dictionary["is_closed"] as! Bool
+        descriptn = dictionary["snippet_text"] as? String
         
         let imageURLString = dictionary["image_url"] as? String
         if imageURLString != nil {
@@ -88,7 +93,8 @@ class Business: NSObject {
         YelpClient.sharedInstance.searchWithTerm(term, completion: completion)
     }
     
-    class func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, completion: ([Business]!, NSError!) -> Void) -> Void {
-        YelpClient.sharedInstance.searchWithTerm(term, sort: sort, categories: categories, deals: deals, completion: completion)
+    class func searchWithTerm(term: String, distance: YelpDistanceMode?, sort: YelpSortMode?, categories: [String]?, deals: Bool?, completion: ([Business]!, NSError!) -> Void) -> Void {
+        print("deals in business :",deals!)
+        YelpClient.sharedInstance.searchWithTerm(term, distance: distance, sort: sort, categories: categories, deals: deals!, completion: completion)
     }
 }
