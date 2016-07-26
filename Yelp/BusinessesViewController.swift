@@ -17,8 +17,8 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     
     var searchTerm : String? = ""
     
-    var sortMode : YelpSortMode? = nil
-    var distanceMode : YelpDistanceMode? = nil
+    var sortMode : YelpSortMode? = .HighestRated
+    var distanceMode : YelpDistanceMode? = .Twenty
     var categories : [String]? = []
     var deals : Bool? = false
     var businessDetailedView : Business?
