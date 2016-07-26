@@ -136,6 +136,11 @@
                                 <segue destination="nID-oH-tis" kind="modal" identifier="filtersSegue" id="ChX-yD-UV3"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="fGb-ef-8pR">
+                            <connections>
+                                <segue destination="MFV-vd-PHj" kind="modal" identifier="mapSegue" id="cHm-6X-aHY"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="eh6-hG-7Tj" id="Hmp-za-Jbw"/>
@@ -296,7 +301,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ibo-6t-j2I" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2356" y="162"/>
+            <point key="canvasLocation" x="2888" y="162"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="xgh-un-UkN">
@@ -315,6 +320,45 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="okg-dD-F6B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="953" y="338"/>
+        </scene>
+        <!--Map-->
+        <scene sceneID="KHF-c6-6zv">
+            <objects>
+                <viewController id="ZbX-DA-gca" customClass="MapViewController" customModule="Yelp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wvg-be-BPH"/>
+                        <viewControllerLayoutGuide type="bottom" id="ge1-g1-wma"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9yG-Pj-0Nm">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0WT-Uj-z5x">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="0WT-Uj-z5x" firstAttribute="leading" secondItem="9yG-Pj-0Nm" secondAttribute="leading" id="4ZR-6u-nqW"/>
+                            <constraint firstItem="ge1-g1-wma" firstAttribute="top" secondItem="0WT-Uj-z5x" secondAttribute="bottom" id="Vm4-s6-I2e"/>
+                            <constraint firstAttribute="trailing" secondItem="0WT-Uj-z5x" secondAttribute="trailing" id="WrO-H8-3xN"/>
+                            <constraint firstItem="0WT-Uj-z5x" firstAttribute="top" secondItem="9yG-Pj-0Nm" secondAttribute="top" id="hqv-ea-M27"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Map" id="84J-Vi-hgg">
+                        <barButtonItem key="leftBarButtonItem" title="Dismiss" id="2Jw-1r-5Qe">
+                            <connections>
+                                <action selector="dismissButtonTapped:" destination="ZbX-DA-gca" id="Jgz-8u-SR6"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="mapView" destination="0WT-Uj-z5x" id="wSF-jR-Zbv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AAu-qG-cwN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2425" y="-449"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="g1k-g6-GRE">
@@ -449,7 +493,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ug3-A8-tVO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1831" y="1175"/>
+            <point key="canvasLocation" x="1927" y="1199"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Fjr-X5-f68">
@@ -468,7 +512,25 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nJM-yg-f2Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1285" y="1187"/>
+            <point key="canvasLocation" x="1485" y="1199"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="qfD-BT-vNJ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="MFV-vd-PHj" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="AkI-ne-D75">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ZbX-DA-gca" kind="relationship" relationship="rootViewController" id="nTe-Le-A6n"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4wc-OY-Cha" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1893" y="-449"/>
         </scene>
     </scenes>
 </document>

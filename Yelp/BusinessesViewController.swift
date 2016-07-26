@@ -148,6 +148,14 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
 
             detailsViewController.business = businessDetailedView
         }
+        else if segue.identifier == "mapSegue" {
+            print("preparing map view controller!")
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let detailsViewController = navigationController.topViewController as! MapViewController
+            
+            detailsViewController.businesses = self.businesses
+            
+        }
 //        filtersViewController.currentPrefs = self.preferences
 //        self.preferences = filtersViewController.preferencesFromTableData()
     }

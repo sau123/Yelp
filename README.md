@@ -12,7 +12,7 @@ The following user stories must be completed:
 * [x] Search bar should be in the navigation bar (doesn't have to expand to show location like the real Yelp app does).
 
 * [ ] Optional: Infinite scroll for restaurant results
-* [ ] Optional: Implement map view of restaurant results
+* [x] Optional: Implement map view of restaurant results
 * [x] Filter page. Unfortunately, not all the filters in the real Yelp App, are supported in the Yelp API.
 * [x] The filters you should actually have are: category, sort (best match, distance, highest rated), distance, deals (on/off).
 * [x] The filters table should be organized into sections as in the mock.
